@@ -9,3 +9,58 @@
 #navbar-content{
 	padding: 0.2em 0.5em;
 }
+
+/*dropdown*/
+
+.clearfix{
+	padding: 0;
+	margin: 0;
+}
+
+.clearfix:after {
+    display:block;
+    clear:both;
+}
+
+/*#navbar-content {
+    margin:0px auto;
+}*/
+
+#navbar-content li {
+/*    margin:0px;
+*/    list-style:none;
+}
+
+#navbar-content > ul > li {
+/*    float:left;
+*/    display:inline-block;
+    position:relative;
+}
+ 
+#navbar-content > ul > li > a {
+/*    padding:10px 40px;
+*/    display:inline-block;
+}
+
+.sub-menu {
+    width: auto;
+    position:absolute;
+    top: 1.336em;
+    left:-0.7em;
+    z-index:-1;
+    opacity:0;
+    transition:opacity linear 0.15s;
+	white-space: nowrap;
+}
+
+.sub-menu ul{
+    padding: 0.2em 0.5em;
+	background: #333;
+	border: 1px solid black;
+	border-top: 0px;
+}
+
+#navbar-content li:hover .sub-menu {
+    z-index:1;
+    opacity:1;
+}

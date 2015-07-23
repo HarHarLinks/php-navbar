@@ -1,5 +1,9 @@
 #navbar{
   width: 100%;
+  /*set styles if required, eg:
+  border-bottom: 1px solid black;
+  background: #333;
+  */
 }
 
 #navbar-content{

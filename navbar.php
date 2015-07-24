@@ -36,16 +36,18 @@ echo '  <ul class="clearfix">';
 		$pathPiece = '-> <a href="'.$curDir.'">'.basename($curDir).'</a>'; //and link to corresponding dir
 		if(!$noMenu) { //again, if we want a menu
 			$pathPiece = ' <li>'.$pathPiece; //we need every path element to be an unordered list item in our 'clearfix' parent list
-			$allSiblings = scandir('../../'.$curDir); //to actually generate we at first need to get all the relevant items
+			$allSiblings = scandir($_SERVER['DOCUMENT_ROOT'].$curDir); //to actually generate we at first need to get all the relevant items
 			$siblings = array();
 				foreach($allSiblings as $sibling){ //the current element always is a folder or index.php to be precise, so we are only interested in .php files (but index) and subfolders
-				if(((is_dir('../'.$sibling) && ($sibling !== basename($oldDir)))) && stripos($sibling, '.') !== 0) {
-					array_push($siblings, $sibling); //sort out the siblings that are dirs, but not the current or non-index.php files and also not invisible
+				if(((is_dir($_SERVER['DOCUMENT_ROOT'].$curDir.'/'.$sibling) && ($sibling !== basename($oldDir))) //we want dirs that are not the current (because we have it already)
+				  || (($sibling !== 'index.php') && (substr($sibling, -4) === '.php'))) //we want other php files to display as well
+				  && (stripos($sibling, '.') !== 0) && ($_SERVER['DOCUMENT_ROOT'].$curDir !== realpath(dirname($thisPage)))) { //we want neither hidden files nor dirs and also no menu for the directory the current page is in
+					array_push($siblings, $sibling);
 				}
 			}
 			if(count($siblings) >= 1) { //if there are corresponding siblings, we generate a sublist containing those siblings
 				$pathPiece = $pathPiece.'<div class="sub-menu"><ul>';
-				if(/*$customOrder*/true && isset($index[basename($curDir)])) {
+				if($customOrder && isset($index[basename($curDir)])) {
 					foreach($index[basename($curDir)] as $entry => $ind){ //search all indices
 						if(in_array($entry, $siblings)){ //! TODO: doesn't actually use indices, but only order in array
 							if($ind >= 0){ //add all elements with nonnegative indices
@@ -58,9 +60,10 @@ echo '  <ul class="clearfix">';
 				foreach($siblings as $sibling){ //add the rest alphabetically
 					$pathPiece = $pathPiece.'<li>\'-> <a href="'.$curDir.'/'.$sibling.'">'.$sibling.'</a></li>';
 				}
-				$pathPiece = $pathPiece.'</ul></div></li>';
-				$path = $pathPiece.$path;
+				$pathPiece = $pathPiece.'</ul></div>';
 			}
+			$pathPiece = $pathPiece.'</li>';
+			$path = $pathPiece.$path;
 		} else {
 			$path = ' '.$pathPiece.$path; //else we just need a leading whitespace.
 		}
@@ -81,7 +84,9 @@ echo '  <ul class="clearfix">';
 		$allSiblings = scandir($curDir); //to actually generate we at first need to get all the relevant items
 		$siblings = array();
 			foreach($allSiblings as $sibling){ //the current element always is a folder or index.php to be precise, so we are only interested in .php files (but index) and subfolders
-			if(((is_dir($curDir.'/'.$sibling) && ($sibling !== basename($oldDir)))) && stripos($sibling, '.') !== 0) {
+			if(((is_dir($curDir.'/'.$sibling) && ($sibling !== basename($oldDir))) //we want dirs that are not the current (because we have it already)
+			  || (($sibling !== 'index.php') && (substr($sibling, -4) === '.php'))) //we want other php files to display as well
+			  && (stripos($sibling, '.') !== 0) && ($_SERVER['DOCUMENT_ROOT'].$curDir !== realpath(dirname($thisPage)))) { //we want neither hidden files nor dirs and also no menu for the directory the current page is in
 				array_push($siblings, $sibling); //sort out the siblings that are dirs, but not the current or non-index.php files and also not invisible
 			}
 		}

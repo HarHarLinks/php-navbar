@@ -7,7 +7,7 @@
 }
 
 #navbar-content{
-	padding: 0.2em 0.5em;
+	padding: 0 0.5em;
 }
 
 /*dropdown*/
@@ -35,6 +35,7 @@
 /*    float:left;
 */    display:inline-block;
     position:relative;
+	padding: 0.2em 0;
 }
  
 #navbar-content > ul > li > a {
@@ -45,11 +46,12 @@
 .sub-menu {
     width: auto;
     position:absolute;
-    top: 1.336em;
+    top: 100%;
     left:-0.7em;
     z-index:-1;
-    opacity:0;
-    transition:opacity linear 0.15s;
+    /*opacity:0;
+    transition:opacity linear 0.15s;*/
+	display: none;
 	white-space: nowrap;
 }
 
@@ -62,5 +64,5 @@
 
 #navbar-content li:hover .sub-menu {
     z-index:1;
-    opacity:1;
+    /*opacity:1;*/display: block;
 }
